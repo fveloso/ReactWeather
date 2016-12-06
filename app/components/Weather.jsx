@@ -10,11 +10,31 @@ var Weather = React.createClass({
             isLoading: false
         }
     },
+    componentDidMount: function () {
+        //from react-router
+        var location = this.props.location.query.location;
+
+        if (location && location.length > 0) {
+            this.handleSearch(location);
+            window.location.hash = '#/';
+        }
+    },
+    componentWillReceiveProps: function (newProps) {
+        //from react-router
+        var location = newProps.location.query.location;
+
+        if (location && location.length > 0) {
+            this.handleSearch(location);
+            window.location.hash = '#/';
+        }
+    },
     handleSearch: function (location) {
         var self = this;
         self.setState({
             isLoading: true,
-            errorMessage: undefined
+            errorMessage: undefined,
+            location: undefined,
+            temp: undefined
         });
 
         openWeatherMap.getTemp(location).then(function (temp) {
